@@ -11,7 +11,7 @@ import java.util.Map;
 
 /**
  * core job action for xxl-job
- * 
+ *
  * @author xuxueli 2016-5-28 15:30:33
  */
 public interface XxlJobService {
@@ -52,6 +52,9 @@ public interface XxlJobService {
 	 * @return
 	 */
 	public ReturnT<String> remove(int id, LoginInfo loginInfo);
+
+
+    ReturnT<XxlJobInfo> info(int id, LoginInfo loginInfo);
 
 	/**
 	 * start job

@@ -78,7 +78,7 @@ public class LoginController {
 		LoginInfo loginInfo = new LoginInfo(String.valueOf(xxlJobUser.getId()), UUIDTool.getSimpleUUID());
 		Response<String> result= XxlSsoHelper.loginWithCookie(loginInfo, response, ifRem);
 
-		return ReturnT.of(result.getCode(), result.getMsg());
+		return ReturnT.of(result.getCode(), result.getMsg(), result.getData());
 	}
 
 	@RequestMapping(value="/logout", method=RequestMethod.POST)

@@ -110,6 +110,13 @@ public class JobInfoController {
 		// opt
 		return xxlJobService.update(jobInfo, loginInfo);
 	}
+
+    @RequestMapping("/info")
+    @ResponseBody
+    public ReturnT<XxlJobInfo> info(HttpServletRequest request, @RequestParam("id") int id) {
+        Response<LoginInfo> loginInfoResponse = XxlSsoHelper.loginCheckWithAttr(request);
+        return xxlJobService.info(id, loginInfoResponse.getData());
+    }
 	
 	@RequestMapping("/remove")
 	@ResponseBody
