@@ -1,0 +1,35 @@
+FROM openjdk:21-jdk-slim
+# 标签
+LABEL version="1.0" description="Java开发环境镜像"
+# 添加包到容器中
+COPY settings.xml /tmp/
+# 执行
+RUN echo "deb http://deb.debian.org/debian bullseye main contrib non-free" > /etc/apt/sources.list \
+    && echo "deb http://deb.debian.org/debian bullseye-updates main contrib non-free" >> /etc/apt/sources.list \
+    && echo "deb http://security.debian.org/debian-security bullseye-security main contrib non-free" >> /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends procps \
+    && apt-get install -y wget curl \
+    && wget https://repo.huaweicloud.com/apache/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz -P /tmp/ \
+    && mkdir -p /opt/maven/ \
+    && tar -xvf /tmp/apache-maven-3.8.5-bin.tar.gz -C /opt/maven/ --strip-components=1 \
+    && mv /tmp/settings.xml /opt/maven/conf/settings.xml \
+    && rm -rf /tmp/apache-maven-3.8.5-bin.tar.gz \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 工作目录
+WORKDIR /app
+
+# 配置 MAVEN 环境变量
+ENV MAVEN_HOME=/opt/maven
+ENV PATH=${PATH}:${MAVEN_HOME}/bin
+
+# 恢复默认 ENTRYPOINT（与 Docker 原生行为一致）
+# ENTRYPOINT ["/bin/bash", "-c"]
+# ENTRYPOINT ["/bin/sh", "-c"]
+
+# CMD [ "sh", "-c", "echo $HOME" ]
+# CMD ["java", "-jar", "my.jar"]
+
